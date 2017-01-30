@@ -3,12 +3,23 @@
 #include "program.h"
   
 namespace robot {
-  void setup() {
-    pinMode(8, OUTPUT);
-    pinMode(9, OUTPUT);
+  const uint8_t speaker = 9;
 
+  const uint8_t
+    dclock1 = 2, ddata1 = 3,
+    dclock2 = 4, ddata2 = 5;
+
+  void setup() {
+    // spare ground for speaker
+    pinMode(8, OUTPUT);
     digitalWrite(8, LOW);
-    digitalWrite(9, LOW);
+
+    pinMode(speaker, OUTPUT);
+
+    pinMode(dclock1, OUTPUT);
+    pinMode(ddata1, OUTPUT);
+    pinMode(dclock2, OUTPUT);
+    pinMode(ddata2 , OUTPUT);
   }
 
   void noop(program::action_args_t pos) {}
@@ -37,47 +48,38 @@ namespace robot {
   void stop_tone(program::action_args_t freq) {
     noTone(9);
   }
+
+  void eye(uint8_t base, program::action_args_t color) {
+    int red = 0, green = 0, blue = 0;
+    switch(color) {
+      case 1:
+        blue = 128;
+        break;
+    }
+
+    program::pwm.setPWM(base+0, 0, red);
+    program::pwm.setPWM(base+1, 0, green);
+    program::pwm.setPWM(base+2, 0, blue);
+  }
+
+  void left_eye(program::action_args_t color) { eye(4, color); }
+  void right_eye(program::action_args_t color) { eye(8, color); }
 };
 
-
-
-
-
-
 /*
+void loop() {
+  shiftOut(d1, c1, LSBFIRST, B11001100);
+  shiftOut(d1, c1, LSBFIRST, B00110011);
+  shiftOut(d2, c2, LSBFIRST, B11001100);
+  shiftOut(d2, c2, LSBFIRST, B00110011);
 
-namespace eyes {
-  // max intensity = 4095
-  void leftEye(int red, int green, int blue) {
-    pwm.setPWM(4, 0, red);
-    pwm.setPWM(5, 0, green);
-    pwm.setPWM(6, 0, blue);
-  }
-  
-  void rightEye(int red, int green, int blue) {
-    pwm.setPWM(8, 0, red);
-    pwm.setPWM(9, 0, green);
-    pwm.setPWM(10, 0, blue);
-  }
-  
-  void green() {
-    leftEye(0, 128, 32);
-    rightEye(0, 128, 32);
-  }
-  
-  void purple() {
-    leftEye(128, 0, 128);
-    rightEye(128, 0, 128);
-  }
-  
-  void red() {
-    leftEye(128, 0, 0);
-    rightEye(128, 0, 0);
-  }
-  
-  void blue() {
-    leftEye(0, 0, 128);
-    rightEye(0, 0, 128);
-  }
+  delay(250);
+
+  shiftOut(d1, c1, LSBFIRST, B00110011);
+  shiftOut(d1, c1, LSBFIRST, B11001100);
+  shiftOut(d2, c2, LSBFIRST, B00110011);
+  shiftOut(d2, c2, LSBFIRST, B11001100);
+
+  delay(250);
 }
 */

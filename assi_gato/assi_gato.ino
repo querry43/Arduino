@@ -7,15 +7,14 @@ void setup() {
 
   program::setup();
   robot::setup();
-
-  pinMode(13, OUTPUT);
-  digitalWrite(13, HIGH);
 }
 
 program::program_t rest = {
   {0, &robot::right_arm, -100},
   {0, &robot::left_arm, -100},
   {0, &robot::head, 0},
+  {0, &robot::left_eye, 1},
+  {0, &robot::right_eye, 1},
 };
 
 program::program_t eat = {
@@ -41,11 +40,9 @@ program::program_t eat = {
 };
 
 void loop() {
-  /*
   program::run(rest, PROGRAM_LENGTH(rest));
 
   while (true) {
     program::run(eat, PROGRAM_LENGTH(eat));
   }
-  */
 }
