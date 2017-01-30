@@ -9,19 +9,6 @@ namespace robot {
     dclock1 = 2, ddata1 = 3,
     dclock2 = 4, ddata2 = 5;
 
-  void setup() {
-    // spare ground for speaker
-    pinMode(8, OUTPUT);
-    digitalWrite(8, LOW);
-
-    pinMode(speaker, OUTPUT);
-
-    pinMode(dclock1, OUTPUT);
-    pinMode(ddata1, OUTPUT);
-    pinMode(dclock2, OUTPUT);
-    pinMode(ddata2 , OUTPUT);
-  }
-
   void noop(program::action_args_t pos) {}
 
   const int arm_range = 300;
@@ -67,6 +54,13 @@ namespace robot {
 
   void display_pattern(program::action_args_t pattern) {
     switch (pattern) {
+      case 0:
+        shiftOut(ddata1, dclock1, LSBFIRST, 0);
+        shiftOut(ddata1, dclock1, LSBFIRST, 0);
+        shiftOut(ddata2, dclock2, LSBFIRST, 0);
+        shiftOut(ddata2, dclock2, LSBFIRST, 0);
+        break;
+
       case 1:
         shiftOut(ddata1, dclock1, LSBFIRST, B11001100);
         shiftOut(ddata1, dclock1, LSBFIRST, B00110011);
@@ -81,5 +75,20 @@ namespace robot {
         shiftOut(ddata2, dclock2, LSBFIRST, B11001100);
         break;
     }
+  }
+
+  void setup() {
+    // spare ground for speaker
+    pinMode(8, OUTPUT);
+    digitalWrite(8, LOW);
+
+    pinMode(speaker, OUTPUT);
+
+    pinMode(dclock1, OUTPUT);
+    pinMode(ddata1, OUTPUT);
+    pinMode(dclock2, OUTPUT);
+    pinMode(ddata2 , OUTPUT);
+
+    display_pattern(0);
   }
 };

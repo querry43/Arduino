@@ -23,7 +23,7 @@ namespace program {
   typedef void (*action_t)(int8_t);
 
   struct command_t {
-    uint64_t time;
+    unsigned long time;
     action_t action;
     action_args_t args;
   };
@@ -36,7 +36,7 @@ namespace program {
   }
 
   void run(program_t program, uint32_t num_commands) {
-    Serial.println("time:command");
+    Serial.println("now:time:command");
 
     uint32_t i = 0;
     unsigned long start = millis();
@@ -44,6 +44,8 @@ namespace program {
       unsigned long now = millis();
       if (now - start >= program[i].time) {
         Serial.print(now);
+        Serial.print(":");
+        Serial.print(program[i].time);
         Serial.print(":");
         Serial.println(i);
 
