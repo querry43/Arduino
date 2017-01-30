@@ -1,7 +1,7 @@
 #pragma once
 
 #include "program.h"
-  
+
 namespace robot {
   const uint8_t speaker = 9;
 
@@ -29,12 +29,12 @@ namespace robot {
     int bottom = 600;
     program::pwm.setPWM(0, 0, map(pos, -100, 100, bottom, bottom - arm_range));
   }
-  
+
   void left_arm(program::action_args_t pos) {
     int bottom = 170;
     program::pwm.setPWM(1, 0, map(pos, -100, 100, bottom, bottom + arm_range));
   }
-  
+
   void head(program::action_args_t pos) {
     int center = 390;
     int range = 120;
@@ -64,22 +64,22 @@ namespace robot {
 
   void left_eye(program::action_args_t color) { eye(4, color); }
   void right_eye(program::action_args_t color) { eye(8, color); }
+
+  void display_pattern(program::action_args_t pattern) {
+    switch (pattern) {
+      case 1:
+        shiftOut(ddata1, dclock1, LSBFIRST, B11001100);
+        shiftOut(ddata1, dclock1, LSBFIRST, B00110011);
+        shiftOut(ddata2, dclock2, LSBFIRST, B11001100);
+        shiftOut(ddata2, dclock2, LSBFIRST, B00110011);
+        break;
+
+      case 2:
+        shiftOut(ddata1, dclock1, LSBFIRST, B00110011);
+        shiftOut(ddata1, dclock1, LSBFIRST, B11001100);
+        shiftOut(ddata2, dclock2, LSBFIRST, B00110011);
+        shiftOut(ddata2, dclock2, LSBFIRST, B11001100);
+        break;
+    }
+  }
 };
-
-/*
-void loop() {
-  shiftOut(d1, c1, LSBFIRST, B11001100);
-  shiftOut(d1, c1, LSBFIRST, B00110011);
-  shiftOut(d2, c2, LSBFIRST, B11001100);
-  shiftOut(d2, c2, LSBFIRST, B00110011);
-
-  delay(250);
-
-  shiftOut(d1, c1, LSBFIRST, B00110011);
-  shiftOut(d1, c1, LSBFIRST, B11001100);
-  shiftOut(d2, c2, LSBFIRST, B00110011);
-  shiftOut(d2, c2, LSBFIRST, B11001100);
-
-  delay(250);
-}
-*/

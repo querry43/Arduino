@@ -18,31 +18,28 @@ program::program_t rest = {
 };
 
 program::program_t eat = {
+  {1000, &robot::display_pattern, 1},
   {1000, &robot::right_arm, -100},
   {1000, &robot::left_arm, 100},
+
+  {2000, &robot::display_pattern, 2},
   {2000, &robot::right_arm, 100},
   {2000, &robot::left_arm, -100},
+};
 
-  {3000, &robot::right_arm, -100},
-  {3000, &robot::left_arm, 100},
-  {4000, &robot::right_arm, 100},
-  {4000, &robot::left_arm, -100},
+program::program_t burp = {
+  {1000, &robot::play_tone, 80},
+  {1500, &robot::stop_tone, 0},
 
-  {5000, &robot::right_arm, -100},
-  {5000, &robot::left_arm, 100},
-  {6000, &robot::right_arm, 100},
-  {6000, &robot::left_arm, -100},
-
-  {7000, &robot::play_tone, 80},
-  {7500, &robot::stop_tone, 0},
-
-  {8000, &robot::noop, 0},
+  {2000, &robot::noop, 0},
 };
 
 void loop() {
-  program::run(rest, PROGRAM_LENGTH(rest));
+  RUN_PROGRAM(rest);
 
   while (true) {
-    program::run(eat, PROGRAM_LENGTH(eat));
+    for (int i = 0; i < 3; i++)
+      RUN_PROGRAM(eat);
+    RUN_PROGRAM(burp);
   }
 }
