@@ -1,6 +1,92 @@
 #pragma once
 
-#include "program.h"
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+class robot {
+public:
+  robot();
+  void setup();
+  void step();
+
+  static Adafruit_PWMServoDriver pwm;
+
+private:
+  class servo {
+  public:
+    servo(int channel, int min, int max);
+    void setup();
+    void step();
+    void set(int target, int speed = 1);
+    int get();
+
+  private:
+    int _channel, _min, _max;
+    int _current, _target, _speed;
+  };
+
+  class rgb_led {
+  public:
+    rgb_led(int channel);
+    void setup();
+    void step();
+    void set(int r, int g, int b, int speed = 1);
+
+  private:
+    int _channel, _speed;
+    int _color[3];
+    int _target_color[3];
+  };
+
+  class led_grid {
+  public:
+    led_grid(int c1, int d1, int c2, int d2);
+    void setup();
+    void clear();
+    void set(uint8_t columns[8]);
+  private:
+    int _c1, _d1, _c2, _d2;
+  };
+
+  class speaker {
+  public:
+    speaker(int pin);
+    void setup();
+    void tone(int frequency);
+    void tone(int frequency, long duration);
+    void noTone();
+  private:
+    int _pin;
+  };
+
+  const int
+    arm_range = 300,
+    left_arm_min = 170,
+    right_arm_min = 600,
+    head_center = 390,
+    head_range = 120;
+
+public:
+  servo
+    left_arm,
+    right_arm,
+    head;
+
+  rgb_led
+    right_eye,
+    left_eye;
+
+  led_grid
+    chest;
+
+  speaker
+    voice;
+};
+
+
+
+
+/*
 
 namespace robot {
   const uint8_t speaker = 9;
@@ -9,25 +95,6 @@ namespace robot {
     dclock1 = 2, ddata1 = 3,
     dclock2 = 4, ddata2 = 5;
 
-  void noop(program::action_args_t pos) {}
-
-  const int arm_range = 300;
-  void right_arm(program::action_args_t pos) {
-    int bottom = 600;
-    program::pwm.setPWM(0, 0, map(pos, -100, 100, bottom, bottom - arm_range));
-  }
-
-  void left_arm(program::action_args_t pos) {
-    int bottom = 170;
-    program::pwm.setPWM(1, 0, map(pos, -100, 100, bottom, bottom + arm_range));
-  }
-
-  void head(program::action_args_t pos) {
-    int center = 390;
-    int range = 120;
-    program::pwm.setPWM(2, 0, map(pos, -100, 100, center-range, center+range));
-  }
-
   void play_tone(program::action_args_t freq) {
     tone(9, freq);
   }
@@ -35,22 +102,6 @@ namespace robot {
   void stop_tone(program::action_args_t freq) {
     noTone(9);
   }
-
-  void eye(uint8_t base, program::action_args_t color) {
-    int red = 0, green = 0, blue = 0;
-    switch(color) {
-      case 1:
-        blue = 128;
-        break;
-    }
-
-    program::pwm.setPWM(base+0, 0, red);
-    program::pwm.setPWM(base+1, 0, green);
-    program::pwm.setPWM(base+2, 0, blue);
-  }
-
-  void left_eye(program::action_args_t color) { eye(4, color); }
-  void right_eye(program::action_args_t color) { eye(8, color); }
 
   void display_pattern(program::action_args_t pattern) {
     switch (pattern) {
@@ -92,3 +143,4 @@ namespace robot {
     display_pattern(0);
   }
 };
+*/
