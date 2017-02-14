@@ -17,7 +17,7 @@ private:
     servo(int channel, int min, int max);
     void setup();
     void step();
-    void set(int target, int speed = 1);
+    void set(int target, int speed = 100);
     int get();
 
   private:
@@ -30,7 +30,7 @@ private:
     rgb_led(int channel);
     void setup();
     void step();
-    void set(int r, int g, int b, int speed = 1);
+    void set(int r, int g, int b, int speed = 100);
 
   private:
     int _channel, _speed;
