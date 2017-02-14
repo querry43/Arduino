@@ -23,9 +23,9 @@ void robot::setup() {
   chest.setup();
   voice.setup();
 
-  head.set(0, 100);
-  left_eye.set(0, 100, 100, 100);
-  right_eye.set(0, 100, 100, 100);
+  head.set(0);
+  left_eye.set(0, 0, 0);
+  right_eye.set(0, 0, 0);
 }
 
 void robot::step() {
