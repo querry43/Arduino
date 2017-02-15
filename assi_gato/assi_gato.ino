@@ -27,6 +27,19 @@ void move_arms(robot* robot, program::action_args_t args) {
   }
 }
 
+void wiggle_torso(robot* robot, program::action_args_t args) {
+  static int i = 0;
+
+  if (i % 3 == 0)
+    robot->torso.set(-100);
+  else if (i % 3 == 1)
+    robot->torso.set(100);
+  else
+    robot->torso.set(0);
+
+  i++;
+}
+
 void move_head(robot* robot, program::action_args_t args) {
   static int i = 0;
 
@@ -90,6 +103,8 @@ program::program_t toggle_pattern = {
   {8500, &toggle_wink, 0},
   {9000, &toggle_wink, 0},
   {9500, &move_head, 0},
+
+  {10000, &wiggle_torso, 0},
 };
 
 program p(&assi_gato, toggle_pattern, PROGRAM_LENGTH(toggle_pattern));

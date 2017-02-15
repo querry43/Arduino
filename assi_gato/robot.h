@@ -64,13 +64,16 @@ private:
     left_arm_min = 170,
     right_arm_min = 600,
     head_center = 390,
-    head_range = 120;
+    head_range = 120,
+    torso_center = 320,
+    torso_range = 120;
 
 public:
   servo
     left_arm,
     right_arm,
-    head;
+    head,
+    torso;
 
   rgb_led
     right_eye,
@@ -82,65 +85,3 @@ public:
   speaker
     voice;
 };
-
-
-
-
-/*
-
-namespace robot {
-  const uint8_t speaker = 9;
-
-  const uint8_t
-    dclock1 = 2, ddata1 = 3,
-    dclock2 = 4, ddata2 = 5;
-
-  void play_tone(program::action_args_t freq) {
-    tone(9, freq);
-  }
-
-  void stop_tone(program::action_args_t freq) {
-    noTone(9);
-  }
-
-  void display_pattern(program::action_args_t pattern) {
-    switch (pattern) {
-      case 0:
-        shiftOut(ddata1, dclock1, LSBFIRST, 0);
-        shiftOut(ddata1, dclock1, LSBFIRST, 0);
-        shiftOut(ddata2, dclock2, LSBFIRST, 0);
-        shiftOut(ddata2, dclock2, LSBFIRST, 0);
-        break;
-
-      case 1:
-        shiftOut(ddata1, dclock1, LSBFIRST, B11001100);
-        shiftOut(ddata1, dclock1, LSBFIRST, B00110011);
-        shiftOut(ddata2, dclock2, LSBFIRST, B11001100);
-        shiftOut(ddata2, dclock2, LSBFIRST, B00110011);
-        break;
-
-      case 2:
-        shiftOut(ddata1, dclock1, LSBFIRST, B00110011);
-        shiftOut(ddata1, dclock1, LSBFIRST, B11001100);
-        shiftOut(ddata2, dclock2, LSBFIRST, B00110011);
-        shiftOut(ddata2, dclock2, LSBFIRST, B11001100);
-        break;
-    }
-  }
-
-  void setup() {
-    // spare ground for speaker
-    pinMode(8, OUTPUT);
-    digitalWrite(8, LOW);
-
-    pinMode(speaker, OUTPUT);
-
-    pinMode(dclock1, OUTPUT);
-    pinMode(ddata1, OUTPUT);
-    pinMode(dclock2, OUTPUT);
-    pinMode(ddata2 , OUTPUT);
-
-    display_pattern(0);
-  }
-};
-*/

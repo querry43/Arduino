@@ -6,6 +6,7 @@ robot::robot() :
     left_arm(servo(1, left_arm_min, left_arm_min + arm_range)),
     right_arm(servo(0, right_arm_min, right_arm_min - arm_range)),
     head(servo(2, head_center - head_range, head_center + head_range)),
+    torso(servo(3, torso_center - torso_range, torso_center + torso_range)),
     left_eye(rgb_led(4)),
     right_eye(rgb_led(8)),
     chest(led_grid(2, 3, 4, 5)),
@@ -18,12 +19,14 @@ void robot::setup() {
   left_arm.setup();
   right_arm.setup();
   head.setup();
+  torso.setup();
   left_eye.setup();
   right_eye.setup();
   chest.setup();
   voice.setup();
 
   head.set(0);
+  torso.set(0);
   left_eye.set(0, 0, 0);
   right_eye.set(0, 0, 0);
 }
@@ -32,6 +35,7 @@ void robot::step() {
   left_arm.step();
   right_arm.step();
   head.step();
+  torso.step();
   left_eye.step();
   right_eye.step();
 }
