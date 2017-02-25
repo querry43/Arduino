@@ -1,6 +1,8 @@
 #include "robot.h"
 
 Adafruit_PWMServoDriver robot::pwm = Adafruit_PWMServoDriver();
+float robot::speed_divider = 60;
+float adj_speed(int speed) { return static_cast<float>(speed) / robot::speed_divider; }
 
 robot::robot() :
     left_arm(servo(1, left_arm_min, left_arm_min + arm_range)),
@@ -50,12 +52,13 @@ void robot::servo::setup() {
 
 void robot::servo::step() {
   if (_current > _target) {
-    _current = max(_target, _current - _speed);
+    _current = max(_target, _current - adj_speed(_speed));
+    pwm.setPWM(_channel, 0, map(_current, -100, 100, _min, _max));
   } else if (_current < _target) {
-    _current = min(_target, _current + _speed);
+    _current = min(_target, _current + adj_speed(_speed));
+    pwm.setPWM(_channel, 0, map(_current, -100, 100, _min, _max));
   }
 
-  pwm.setPWM(_channel, 0, map(_current, -100, 100, _min, _max));
 }
 
 void robot::servo::set(int target, int speed) {
@@ -65,6 +68,12 @@ void robot::servo::set(int target, int speed) {
 
 int robot::servo::get() {
   return _current;
+}
+
+void robot::servo::idle() {
+  _current = 0;
+  _target = 0;
+  pwm.setPWM(_channel, 0, 0);
 }
 
 robot::rgb_led::rgb_led(int channel) : _channel(channel), _color({0,0,0}), _target_color({0,0,0}) { }

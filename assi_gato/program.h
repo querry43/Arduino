@@ -6,7 +6,10 @@
 
 class program {
 public:
-  typedef int8_t action_args_t;
+  struct action_args_t {
+    int speed;
+    int i1, i2, i3;
+  };
   typedef void (*action_t)(robot*, action_args_t);
 
   struct command_t {

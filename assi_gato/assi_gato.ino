@@ -3,6 +3,30 @@
 
 robot assi_gato;
 
+void noop(robot* robot, program::action_args_t args) { }
+
+void set_eye_color(robot* robot, program::action_args_t args) {
+  robot->left_eye.set(args.i1, args.i2, args.i3, args.speed);
+  robot->right_eye.set(args.i1, args.i2, args.i3, args.speed);
+}
+
+void right_arm(robot* robot, program::action_args_t args) {
+  robot->right_arm.set(args.i1, args.speed);
+}
+
+void left_arm(robot* robot, program::action_args_t args) {
+  robot->left_arm.set(args.i1, args.speed);
+}
+
+void torso(robot* robot, program::action_args_t args) {
+  robot->torso.set(args.i1, args.speed);
+}
+
+void head(robot* robot, program::action_args_t args) {
+  robot->head.set(args.i1, args.speed);
+}
+
+
 void change_pattern(robot* robot, program::action_args_t args) {
   static int i = 0;
   uint8_t
@@ -53,9 +77,7 @@ void burp(robot* robot, program::action_args_t args) {
   robot->voice.tone(80, 500);
 }
 
-void noop(robot* robot, program::action_args_t args) { }
-
-void set_eye_color(robot* robot, program::action_args_t args) {
+void blue_eyes(robot* robot, program::action_args_t args) {
   robot->left_eye.set(0, 100, 100);
   robot->right_eye.set(0, 100, 100);
 }
@@ -69,9 +91,8 @@ void toggle_wink(robot* robot, program::action_args_t args) {
     robot->left_eye.set(0, 100, 100);
 }
 
-
-program::program_t toggle_pattern = {
-  {0, &set_eye_color, 0},
+program::program_t eat = {
+  {0, &blue_eyes, 0},
 
   {500, &change_pattern, 0},
   {1000, &change_pattern, 0},
@@ -107,7 +128,16 @@ program::program_t toggle_pattern = {
   {10000, &wiggle_torso, 0},
 };
 
-program p(&assi_gato, toggle_pattern, PROGRAM_LENGTH(toggle_pattern));
+program p(&assi_gato, eat, PROGRAM_LENGTH(eat));
+
+
+program::program_t pulse_eyes = {
+  {0, &set_eye_color, {100, 0, 300, 300}},
+  {10, &set_eye_color, {1, 0, 100, 100}},
+  {1000, &noop},
+};
+
+//program p(&assi_gato, dance, PROGRAM_LENGTH(dance));
 
 void setup() {
   Serial.begin(9600);

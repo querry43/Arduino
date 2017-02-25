@@ -10,6 +10,7 @@ public:
   void step();
 
   static Adafruit_PWMServoDriver pwm;
+  static float speed_divider;
 
 private:
   class servo {
@@ -19,10 +20,12 @@ private:
     void step();
     void set(int target, int speed = 100);
     int get();
+    void idle();
 
   private:
     int _channel, _min, _max;
-    int _current, _target, _speed;
+    float _current, _target;
+    int _speed;
   };
 
   class rgb_led {
