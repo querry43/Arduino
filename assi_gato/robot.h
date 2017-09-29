@@ -69,14 +69,18 @@ private:
     head_center = 390,
     head_range = 120,
     torso_center = 320,
-    torso_range = 120;
+    torso_range = 120,
+
+    tilt_center = 412, // 365 - 450
+    tilt_range = 37;
 
 public:
   servo
     left_arm,
     right_arm,
     head,
-    torso;
+    torso,
+    tilt;
 
   rgb_led
     right_eye,

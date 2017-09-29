@@ -26,6 +26,19 @@ void head(robot* robot, program::action_args_t args) {
   robot->head.set(args.i1, args.speed);
 }
 
+void tilt(robot* robot, program::action_args_t args) {
+  robot->tilt.set(args.i1);
+}
+
+/*
+void tilt(robot* robot, program::action_args_t args) {
+  static int i = 0;
+  if (i++ % 2 == 0)
+    robot->tilt.set(100);
+  else
+    robot->tilt.set(-100);
+}
+*/
 
 void change_pattern(robot* robot, program::action_args_t args) {
   static int i = 0;
@@ -93,6 +106,7 @@ void toggle_wink(robot* robot, program::action_args_t args) {
 
 program::program_t eat = {
   {0, &blue_eyes, 0},
+  {10, &tilt, {100, -100, 0, 0}},
 
   {500, &change_pattern, 0},
   {1000, &change_pattern, 0},
@@ -117,7 +131,8 @@ program::program_t eat = {
   {5500, &change_pattern, 0},
   {6000, &change_pattern, 0},
   {6000, &move_arms, 0},
-  
+
+  {6500, &tilt, {100, 100, 0, 0}},
   {7000, &burp, 0},
 
   {8000, &move_head, 0},
@@ -128,7 +143,6 @@ program::program_t eat = {
   {10000, &wiggle_torso, 0},
 };
 
-program p(&assi_gato, eat, PROGRAM_LENGTH(eat));
 
 
 program::program_t pulse_eyes = {
@@ -137,7 +151,14 @@ program::program_t pulse_eyes = {
   {1000, &noop},
 };
 
-//program p(&assi_gato, dance, PROGRAM_LENGTH(dance));
+program::program_t test = {
+  {0, &right_arm, {100, 100, 0, 0}},
+  {1000, &right_arm, {100, -100, 0, 0}},
+  {2000, &noop},
+};
+
+//program p(&assi_gato, test, PROGRAM_LENGTH(test));
+program p(&assi_gato, eat, PROGRAM_LENGTH(eat));
 
 void setup() {
   Serial.begin(9600);
